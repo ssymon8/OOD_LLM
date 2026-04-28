@@ -1,0 +1,17 @@
+torch
+torchvision
+torchaudio
+
+numpy
+pandas
+
+scikit-learn
+
+matplotlib
+seaborn
+
+jupyterlab
+tqdm
+
+huggingface_hub
+datasets
