@@ -1,12 +1,13 @@
 import os
 import torch
 import json
+import tqdm
 from transformers import Mistral3ForConditionalGeneration, MistralCommonBackend
 
 def main():
     model_path = os.path.expanduser("~/OOD_LLM/ministral")
     
-    print(f"Loading model from {model_path}...")
+    logger.info(f"Loading model from {model_path}...")
     
     # Tokenizer loading
     tokenizer = MistralCommonBackend.from_pretrained(model_path)
@@ -24,21 +25,22 @@ def main():
         "Écris une fonction Python utilisant PyTorch pour multiplier deux tenseurs."
     ]
 
-    if not os.path.exists("./outputs/reponses.txt"):
+    if not os.path.exists("./outputs/reponses.json"):
         os.makedirs("outputs", exist_ok=True)
     
-    output_file = "./outputs/reponses.txt"
+    output_file = "./outputs/reponses.json"
 
     with open(output_file, "w", encoding="utf-8") as f:
         for prompt in prompts:
             messages = [{"role": "user", "content": prompt}]
             
             # prompt processing using the tokenizer's chat template
-            inputs = tokenizer.apply_chat_template(messages, return_tensors="pt").to("cuda")
+            inputs = tokenizer.apply_chat_template(messages, return_tensors="pt", return_dict=True).to(model.device)
             
-            print(f"generating response for prompt : '{prompt[:30]}...'")
+            logger.info(f"generating response for prompt : '{prompt[:30]}...'")
+
             outputs = model.generate(
-                inputs, 
+                inputs.input_ids, 
                 max_new_tokens=512,
                 temperature=0.1, # respecting the hf readme
                 do_sample=True
@@ -47,10 +49,10 @@ def main():
             # decode the generated response, skipping the input tokens
             response = tokenizer.decode(outputs[0][inputs.shape[1]:], skip_special_tokens=True)
             
-            f.write(f"PROMPT:\n{prompt}\n\nREPONSE:\n{response}\n")
-            f.write("="*50 + "\n")
+            json.dump({"prompt": prompt, "response": response}, f)
+            f.write("\n")
 
-    print(f"Done, results saved to {output_file}")
+    logger.info(f"Done, results saved to {output_file}")
 
 if __name__ == "__main__":
     main()
