@@ -1,6 +1,7 @@
 torch
 torchvision
 torchaudio
+mistral-common
 
 transformers
 vllm
