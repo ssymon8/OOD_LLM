@@ -41,8 +41,7 @@ def main():
         model = Mistral3ForConditionalGeneration.from_pretrained(
             model_path,
             device_map="auto",
-            local_files_only=True,  # prevent downloading from hub
-            quantization_config=FineGrainedFP8Config(dequantize= True)
+            local_files_only=True # prevent downloading from hub
         )
         logger.info("Model loaded")
         model.eval()  # Set to evaluation mode

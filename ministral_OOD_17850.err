@@ -1,0 +1,167 @@
+2026-05-16 00:54:44,656 - INFO - Script started!
+2026-05-16 00:54:44,860 - INFO - Using device: cuda
+2026-05-16 00:54:44,860 - INFO - Loading model from /home/ensta/ensta-drouet/OOD_LLM/ministral...
+2026-05-16 00:54:44,968 - INFO - Non special vocabulary size is 130072 with 1000 special tokens.
+2026-05-16 00:54:45,253 - INFO - Tokenizer loaded
+Loading weights:   0%|          | 0/458 [00:00<?, ?it/s]Loading weights:   0%|          | 1/458 [00:01<11:51,  1.56s/it]Loading weights:   1%|          | 3/458 [00:01<03:35,  2.12it/s]Loading weights:   3%|▎         | 12/458 [00:01<00:45,  9.76it/s]Loading weights:   4%|▍         | 18/458 [00:02<00:31, 13.96it/s]Loading weights:   5%|▍         | 22/458 [00:02<00:25, 17.04it/s]Loading weights:   6%|▌         | 28/458 [00:02<00:18, 23.22it/s]Loading weights:   7%|▋         | 34/458 [00:02<00:14, 29.48it/s]Loading weights:   9%|▊         | 39/458 [00:02<00:14, 28.58it/s]Loading weights:  10%|█         | 46/458 [00:02<00:11, 35.03it/s]Loading weights:  11%|█         | 51/458 [00:02<00:11, 36.81it/s]Loading weights:  12%|█▏        | 56/458 [00:03<00:10, 39.60it/s]Loading weights:  13%|█▎        | 61/458 [00:03<00:10, 36.13it/s]Loading weights:  14%|█▍        | 66/458 [00:03<00:11, 34.54it/s]Loading weights:  16%|█▌        | 72/458 [00:03<00:10, 35.56it/s]Loading weights:  17%|█▋        | 76/458 [00:03<00:10, 35.68it/s]Loading weights:  17%|█▋        | 80/458 [00:03<00:11, 31.54it/s]Loading weights:  19%|█▊        | 85/458 [00:03<00:11, 33.63it/s]Loading weights:  19%|█▉        | 89/458 [00:04<00:11, 32.56it/s]Loading weights:  21%|██        | 94/458 [00:04<00:10, 35.75it/s]Loading weights:  21%|██▏       | 98/458 [00:04<00:10, 34.65it/s]Loading weights:  22%|██▏       | 103/458 [00:04<00:10, 35.39it/s]Loading weights:  23%|██▎       | 107/458 [00:04<00:10, 32.36it/s]Loading weights:  24%|██▍       | 112/458 [00:04<00:10, 32.64it/s]Loading weights:  25%|██▌       | 116/458 [00:04<00:10, 33.14it/s]Loading weights:  26%|██▌       | 120/458 [00:04<00:10, 32.56it/s]Loading weights:  27%|██▋       | 124/458 [00:05<00:10, 32.75it/s]Loading weights:  28%|██▊       | 129/458 [00:05<00:09, 35.72it/s]Loading weights:  29%|██▉       | 133/458 [00:05<00:09, 34.80it/s]Loading weights:  30%|██▉       | 137/458 [00:05<00:10, 30.50it/s]Loading weights:  31%|███       | 142/458 [00:05<00:09, 34.17it/s]Loading weights:  32%|███▏      | 146/458 [00:05<00:09, 34.25it/s]Loading weights:  33%|███▎      | 150/458 [00:05<00:08, 35.66it/s]Loading weights:  34%|███▎      | 154/458 [00:05<00:09, 33.76it/s]Loading weights:  34%|███▍      | 158/458 [00:06<00:09, 33.08it/s]Loading weights:  36%|███▌      | 163/458 [00:06<00:07, 37.05it/s]Loading weights:  36%|███▋      | 167/458 [00:06<00:08, 33.19it/s]Loading weights:  38%|███▊      | 172/458 [00:06<00:08, 31.94it/s]Loading weights:  38%|███▊      | 176/458 [00:06<00:08, 33.05it/s]Loading weights:  39%|███▉      | 180/458 [00:06<00:09, 29.86it/s]Loading weights:  40%|████      | 185/458 [00:06<00:08, 33.17it/s]Loading weights:  41%|████▏     | 189/458 [00:07<00:08, 31.66it/s]Loading weights:  42%|████▏     | 194/458 [00:07<00:07, 33.06it/s]Loading weights:  43%|████▎     | 198/458 [00:07<00:07, 34.31it/s]Loading weights:  44%|████▍     | 202/458 [00:07<00:08, 30.69it/s]Loading weights:  45%|████▌     | 207/458 [00:07<00:07, 34.60it/s]Loading weights:  47%|████▋     | 214/458 [00:07<00:06, 40.14it/s]Loading weights:  48%|████▊     | 219/458 [00:07<00:05, 42.53it/s]Loading weights:  49%|████▉     | 224/458 [00:07<00:05, 42.06it/s]Loading weights:  50%|█████     | 229/458 [00:08<00:05, 42.35it/s]Loading weights:  51%|█████     | 234/458 [00:08<00:05, 42.02it/s]Loading weights:  74%|███████▍  | 339/458 [00:08<00:00, 298.60it/s]Loading weights:  81%|████████  | 371/458 [00:08<00:00, 224.46it/s]Loading weights:  87%|████████▋ | 398/458 [00:08<00:00, 194.68it/s]Loading weights:  92%|█████████▏| 421/458 [00:08<00:00, 171.15it/s]Loading weights:  96%|█████████▋| 441/458 [00:08<00:00, 169.69it/s]Loading weights: 100%|██████████| 458/458 [00:09<00:00, 50.25it/s] 
+[transformers] [1mMistral3ForConditionalGeneration LOAD REPORT[0m from: /home/ensta/ensta-drouet/OOD_LLM/ministral
+Key                                                          | Status     |                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                    
+-------------------------------------------------------------+------------+------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+model.language_model.layers.{0...25}.mlp.gate_proj.weight    | MISSING    |                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                    
+model.language_model.layers.{0...25}.self_attn.k_proj.weight | MISSING    |                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                    
+model.language_model.layers.{0...25}.mlp.down_proj.weight    | MISSING    |                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                    
+model.language_model.layers.{0...25}.mlp.up_proj.weight      | MISSING    |                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                    
+model.language_model.layers.{0...25}.self_attn.v_proj.weight | MISSING    |                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                    
+model.language_model.layers.{0...25}.self_attn.q_proj.weight | MISSING    |                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                    
+model.language_model.layers.{0...25}.self_attn.o_proj.weight | MISSING    |                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                    
+model.language_model.layers.{0...25}.mlp.down_proj.weight    | CONVERSION | 
+
+Traceback (most recent call last):
+  File "/home/ensta/ensta-drouet/OOD_LLM/.venv/lib/python3.12/site-packages/transformers/core_model_loading.py", line 1013, in log_conversion_errors
+    yield
+  File "/home/ensta/ensta-drouet/OOD_LLM/.venv/lib/python3.12/site-packages/transformers/core_model_loading.py", line 897, in convert
+    collected_tensors = op.convert(
+                        ^^^^^^^^^^^
+  File "/home/ensta/ensta-drouet/OOD_LLM/.venv/lib/python3.12/site-packages/transformers/integrations/finegrained_fp8.py", line 1024, in convert
+    return {full_layer_name: self._dequantize_one(quantized, scales)}
+                             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/ensta/ensta-drouet/OOD_LLM/.venv/lib/python3.12/site-packages/transformers/integrations/finegrained_fp8.py", line 992, in _dequantize_one
+    scale_rows, scale_cols = scales.shape[-2:]
+    ^^^^^^^^^^^^^^^^^^^^^^
+ValueError: not enough values to unpack (expected 2, got 0)
+not enough values to unpack (expected 2, got 0)
+Error: Fp8Dequantize on tensors destined for model.language_model.layers.25.mlp.down_proj.weight. Ckpt contains: 3
+
+   
+model.language_model.layers.{0...25}.mlp.gate_proj.weight    | CONVERSION | 
+
+Traceback (most recent call last):
+  File "/home/ensta/ensta-drouet/OOD_LLM/.venv/lib/python3.12/site-packages/transformers/core_model_loading.py", line 1013, in log_conversion_errors
+    yield
+  File "/home/ensta/ensta-drouet/OOD_LLM/.venv/lib/python3.12/site-packages/transformers/core_model_loading.py", line 897, in convert
+    collected_tensors = op.convert(
+                        ^^^^^^^^^^^
+  File "/home/ensta/ensta-drouet/OOD_LLM/.venv/lib/python3.12/site-packages/transformers/integrations/finegrained_fp8.py", line 1024, in convert
+    return {full_layer_name: self._dequantize_one(quantized, scales)}
+                             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/ensta/ensta-drouet/OOD_LLM/.venv/lib/python3.12/site-packages/transformers/integrations/finegrained_fp8.py", line 992, in _dequantize_one
+    scale_rows, scale_cols = scales.shape[-2:]
+    ^^^^^^^^^^^^^^^^^^^^^^
+ValueError: not enough values to unpack (expected 2, got 0)
+not enough values to unpack (expected 2, got 0)
+Error: Fp8Dequantize on tensors destined for model.language_model.layers.25.mlp.gate_proj.weight. Ckpt contains: 3
+
+   
+model.language_model.layers.{0...25}.mlp.up_proj.weight      | CONVERSION | 
+
+Traceback (most recent call last):
+  File "/home/ensta/ensta-drouet/OOD_LLM/.venv/lib/python3.12/site-packages/transformers/core_model_loading.py", line 1013, in log_conversion_errors
+    yield
+  File "/home/ensta/ensta-drouet/OOD_LLM/.venv/lib/python3.12/site-packages/transformers/core_model_loading.py", line 897, in convert
+    collected_tensors = op.convert(
+                        ^^^^^^^^^^^
+  File "/home/ensta/ensta-drouet/OOD_LLM/.venv/lib/python3.12/site-packages/transformers/integrations/finegrained_fp8.py", line 1024, in convert
+    return {full_layer_name: self._dequantize_one(quantized, scales)}
+                             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/ensta/ensta-drouet/OOD_LLM/.venv/lib/python3.12/site-packages/transformers/integrations/finegrained_fp8.py", line 992, in _dequantize_one
+    scale_rows, scale_cols = scales.shape[-2:]
+    ^^^^^^^^^^^^^^^^^^^^^^
+ValueError: not enough values to unpack (expected 2, got 0)
+not enough values to unpack (expected 2, got 0)
+Error: Fp8Dequantize on tensors destined for model.language_model.layers.25.mlp.up_proj.weight. Ckpt contains: 3
+
+     
+model.language_model.layers.{0...25}.self_attn.k_proj.weight | CONVERSION | 
+
+Traceback (most recent call last):
+  File "/home/ensta/ensta-drouet/OOD_LLM/.venv/lib/python3.12/site-packages/transformers/core_model_loading.py", line 1013, in log_conversion_errors
+    yield
+  File "/home/ensta/ensta-drouet/OOD_LLM/.venv/lib/python3.12/site-packages/transformers/core_model_loading.py", line 897, in convert
+    collected_tensors = op.convert(
+                        ^^^^^^^^^^^
+  File "/home/ensta/ensta-drouet/OOD_LLM/.venv/lib/python3.12/site-packages/transformers/integrations/finegrained_fp8.py", line 1024, in convert
+    return {full_layer_name: self._dequantize_one(quantized, scales)}
+                             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/ensta/ensta-drouet/OOD_LLM/.venv/lib/python3.12/site-packages/transformers/integrations/finegrained_fp8.py", line 992, in _dequantize_one
+    scale_rows, scale_cols = scales.shape[-2:]
+    ^^^^^^^^^^^^^^^^^^^^^^
+ValueError: not enough values to unpack (expected 2, got 0)
+not enough values to unpack (expected 2, got 0)
+Error: Fp8Dequantize on tensors destined for model.language_model.layers.25.self_attn.k_proj.weight. Ckpt contains: 3
+
+
+model.language_model.layers.{0...25}.self_attn.o_proj.weight | CONVERSION | 
+
+Traceback (most recent call last):
+  File "/home/ensta/ensta-drouet/OOD_LLM/.venv/lib/python3.12/site-packages/transformers/core_model_loading.py", line 1013, in log_conversion_errors
+    yield
+  File "/home/ensta/ensta-drouet/OOD_LLM/.venv/lib/python3.12/site-packages/transformers/core_model_loading.py", line 897, in convert
+    collected_tensors = op.convert(
+                        ^^^^^^^^^^^
+  File "/home/ensta/ensta-drouet/OOD_LLM/.venv/lib/python3.12/site-packages/transformers/integrations/finegrained_fp8.py", line 1024, in convert
+    return {full_layer_name: self._dequantize_one(quantized, scales)}
+                             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/ensta/ensta-drouet/OOD_LLM/.venv/lib/python3.12/site-packages/transformers/integrations/finegrained_fp8.py", line 992, in _dequantize_one
+    scale_rows, scale_cols = scales.shape[-2:]
+    ^^^^^^^^^^^^^^^^^^^^^^
+ValueError: not enough values to unpack (expected 2, got 0)
+not enough values to unpack (expected 2, got 0)
+Error: Fp8Dequantize on tensors destined for model.language_model.layers.25.self_attn.o_proj.weight. Ckpt contains: 3
+
+
+model.language_model.layers.{0...25}.self_attn.q_proj.weight | CONVERSION | 
+
+Traceback (most recent call last):
+  File "/home/ensta/ensta-drouet/OOD_LLM/.venv/lib/python3.12/site-packages/transformers/core_model_loading.py", line 1013, in log_conversion_errors
+    yield
+  File "/home/ensta/ensta-drouet/OOD_LLM/.venv/lib/python3.12/site-packages/transformers/core_model_loading.py", line 897, in convert
+    collected_tensors = op.convert(
+                        ^^^^^^^^^^^
+  File "/home/ensta/ensta-drouet/OOD_LLM/.venv/lib/python3.12/site-packages/transformers/integrations/finegrained_fp8.py", line 1024, in convert
+    return {full_layer_name: self._dequantize_one(quantized, scales)}
+                             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/ensta/ensta-drouet/OOD_LLM/.venv/lib/python3.12/site-packages/transformers/integrations/finegrained_fp8.py", line 992, in _dequantize_one
+    scale_rows, scale_cols = scales.shape[-2:]
+    ^^^^^^^^^^^^^^^^^^^^^^
+ValueError: not enough values to unpack (expected 2, got 0)
+not enough values to unpack (expected 2, got 0)
+Error: Fp8Dequantize on tensors destined for model.language_model.layers.25.self_attn.q_proj.weight. Ckpt contains: 3
+
+
+model.language_model.layers.{0...25}.self_attn.v_proj.weight | CONVERSION | 
+
+Traceback (most recent call last):
+  File "/home/ensta/ensta-drouet/OOD_LLM/.venv/lib/python3.12/site-packages/transformers/core_model_loading.py", line 1013, in log_conversion_errors
+    yield
+  File "/home/ensta/ensta-drouet/OOD_LLM/.venv/lib/python3.12/site-packages/transformers/core_model_loading.py", line 897, in convert
+    collected_tensors = op.convert(
+                        ^^^^^^^^^^^
+  File "/home/ensta/ensta-drouet/OOD_LLM/.venv/lib/python3.12/site-packages/transformers/integrations/finegrained_fp8.py", line 1024, in convert
+    return {full_layer_name: self._dequantize_one(quantized, scales)}
+                             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/ensta/ensta-drouet/OOD_LLM/.venv/lib/python3.12/site-packages/transformers/integrations/finegrained_fp8.py", line 992, in _dequantize_one
+    scale_rows, scale_cols = scales.shape[-2:]
+    ^^^^^^^^^^^^^^^^^^^^^^
+ValueError: not enough values to unpack (expected 2, got 0)
+not enough values to unpack (expected 2, got 0)
+Error: Fp8Dequantize on tensors destined for model.language_model.layers.25.self_attn.v_proj.weight. Ckpt contains: 3
+
+
+
+Notes:
+- MISSING:	those params were newly initialized because missing from the checkpoint. Consider training on your downstream task.
+- CONVERSION:	originate from the conversion scheme
+2026-05-16 00:54:54,837 - ERROR - Error during execution: We encountered some issues during automatic conversion of the weights. For details look at the `CONVERSION` entries of the above report!
+Traceback (most recent call last):
+  File "/home/ensta/ensta-drouet/OOD_LLM/run_ministral.py", line 41, in main
+    model = Mistral3ForConditionalGeneration.from_pretrained(
+            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/ensta/ensta-drouet/OOD_LLM/.venv/lib/python3.12/site-packages/transformers/modeling_utils.py", line 4246, in from_pretrained
+    loading_info = cls._finalize_model_loading(model, load_config, loading_info)
+                   ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/ensta/ensta-drouet/OOD_LLM/.venv/lib/python3.12/site-packages/transformers/modeling_utils.py", line 4418, in _finalize_model_loading
+    log_state_dict_report(
+  File "/home/ensta/ensta-drouet/OOD_LLM/.venv/lib/python3.12/site-packages/transformers/utils/loading_report.py", line 273, in log_state_dict_report
+    raise RuntimeError(
+RuntimeError: We encountered some issues during automatic conversion of the weights. For details look at the `CONVERSION` entries of the above report!
+srun: error: ensta-l40s01.r2.enst.fr: task 0: Exited with exit code 1
