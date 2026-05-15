@@ -46,11 +46,11 @@ def main():
         logger.info("Model loaded")
         model.eval()  # Set to evaluation mode
 
-    # requests to test the model
-    prompts = [
+        # requests to test the model
+        prompts = [
         "Explique le concept de pointeur intelligent (smart pointer) en C++.",
         "Écris une fonction Python utilisant PyTorch pour multiplier deux tenseurs."
-    ]
+        ]
 
         # Create output directory
         output_dir = Path("./outputs")
