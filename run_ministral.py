@@ -1,23 +1,50 @@
 import os
+import sys
 import torch
 import json
-import tqdm
-from transformers import Mistral3ForConditionalGeneration, MistralCommonBackend
+from pathlib import Path
+from transformers import AutoTokenizer, Ministral3ForCausalLM
+
+import logging
+
+# Configure logger
+logging.basicConfig(
+    level=logging.INFO,
+    format='%(asctime)s - %(levelname)s - %(message)s'
+)
+logger = logging.getLogger(__name__)
 
 def main():
-    model_path = os.path.expanduser("~/OOD_LLM/ministral")
-    
-    logger.info(f"Loading model from {model_path}...")
-    
-    # Tokenizer loading
-    tokenizer = MistralCommonBackend.from_pretrained(model_path)
-    
-    model = Mistral3ForConditionalGeneration.from_pretrained(
-        model_path,
-        torch_dtype=torch.fp8, #model is in fp8, so we load it directly in fp8 for efficiency
-        device_map="auto",
-        local_files_only=True # additional safeguard to ensure we only load from local files
-    )
+    try:
+        model_path = os.path.expanduser("~/OOD_LLM/ministral")
+        
+        # Verify model path exists
+        if not Path(model_path).exists():
+            logger.error(f"Model path not found: {model_path}")
+            sys.exit(1)
+        
+        # Detect device
+        if not torch.cuda.is_available():
+            logger.error("CUDA not available :/")
+            sys.exit(1)
+        device = "cuda"
+        logger.info(f"Using device: {device}")
+        
+        logger.info(f"Loading model from {model_path}...")
+        
+        # Tokenizer loading
+        tokenizer = AutoTokenizer.from_pretrained(model_path)
+        logger.info("Tokenizer loaded")
+        
+        # Model loading
+        model = Ministral3ForCausalLM.from_pretrained(
+            model_path,
+            torch_dtype=torch.fp8,  # model is in fp8 for memory efficiency
+            device_map="auto",
+            local_files_only=True  # prevent downloading from hub
+        )
+        logger.info("Model loaded")
+        model.eval()  # Set to evaluation mode
 
     # requests to test the model
     prompts = [
@@ -25,34 +52,49 @@ def main():
         "Écris une fonction Python utilisant PyTorch pour multiplier deux tenseurs."
     ]
 
-    if not os.path.exists("./outputs/reponses.json"):
-        os.makedirs("outputs", exist_ok=True)
+        # Create output directory
+        output_dir = Path("./outputs")
+        output_dir.mkdir(parents=True, exist_ok=True)
     
-    output_file = "./outputs/reponses.json"
+        output_file = output_dir / "reponses.json"
 
-    with open(output_file, "w", encoding="utf-8") as f:
-        for prompt in prompts:
-            messages = [{"role": "user", "content": prompt}]
-            
-            # prompt processing using the tokenizer's chat template
-            inputs = tokenizer.apply_chat_template(messages, return_tensors="pt", return_dict=True).to(model.device)
-            
-            logger.info(f"generating response for prompt : '{prompt[:30]}...'")
+        with open(output_file, "w", encoding="utf-8") as f:
+            for i, prompt in enumerate(prompts, 1):
+                logger.info(f"Processing prompt {i}/{len(prompts)}: '{prompt[:30]}...'")
+                messages = [{"role": "user", "content": prompt}]
+                
+                # Apply chat template and move all tensors to device
+                inputs = tokenizer.apply_chat_template(
+                    messages,
+                    return_tensors="pt",
+                    return_dict=True
+                ).to(device)
 
-            outputs = model.generate(
-                inputs.input_ids, 
-                max_new_tokens=512,
-                temperature=0.1, # respecting the hf readme
-                do_sample=True
-            )
-            
-            # decode the generated response, skipping the input tokens
-            response = tokenizer.decode(outputs[0][inputs.shape[1]:], skip_special_tokens=True)
-            
-            json.dump({"prompt": prompt, "response": response}, f)
-            f.write("\n")
+                with torch.no_grad():
+                    outputs = model.generate(
+                        input_ids=inputs["input_ids"],
+                        attention_mask=inputs.get("attention_mask"),
+                        max_length=inputs["input_ids"].shape[1] + 512,
+                        temperature=0.1,
+                        do_sample=True
+                    )
+                
+                # Decode response, skipping input tokens
+                input_length = inputs["input_ids"].shape[1]
+                response = tokenizer.decode(
+                    outputs[0][input_length:],
+                    skip_special_tokens=True
+                )
+                
+                # Save result
+                json.dump({"prompt": prompt, "response": response}, f, ensure_ascii=False)
+                f.write("\n")
 
-    logger.info(f"Done, results saved to {output_file}")
+        logger.info(f"Results saved to {output_file}")
+    
+    except Exception as e:
+        logger.error(f"Error during execution: {e}", exc_info=True)
+        sys.exit(1)
 
 if __name__ == "__main__":
     main()
