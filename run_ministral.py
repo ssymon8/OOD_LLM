@@ -25,7 +25,7 @@ def main():
     ]
 
     if not os.path.exists("./outputs/reponses.txt"):
-        os.makedirs("outputs")
+        os.makedirs("outputs", exist_ok=True)
     
     output_file = "./outputs/reponses.txt"
 
