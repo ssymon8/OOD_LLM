@@ -2,6 +2,9 @@ torch
 torchvision
 torchaudio
 
+transformers
+vllm
+
 numpy
 pandas
 
