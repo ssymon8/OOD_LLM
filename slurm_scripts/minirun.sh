@@ -1,6 +1,4 @@
 #!/bin/bash
-set -e
-
 #SBATCH --job-name=ministral_OOD
 #SBATCH --partition=ENSTA-h100
 #SBATCH --output=ministral_OOD_%j.log
