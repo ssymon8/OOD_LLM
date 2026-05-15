@@ -1,21 +1,25 @@
-torch
-torchvision
-torchaudio
-mistral-common
+# Core dependencies
+torch>=2.2.0
+transformers>=4.45.0
+accelerate>=0.28.0
 
-transformers
-vllm
+# Mistral specific
+mistral-common>=1.8.6
 
-numpy
-pandas
+# Data & Scientific Computing
+datasets>=2.18.0
+numpy>=1.26.0
+scipy>=1.12.0
+scikit-learn>=1.4.0
 
-scikit-learn
+# Visualization & Logging
+matplotlib>=3.8.0
+seaborn>=0.13.0
+tqdm>=4.66.0
 
-matplotlib
-seaborn
+# Model Hub & Development
+huggingface_hub>=0.21.0
+jupyterlab>=4.0.0
 
-jupyterlab
-tqdm
-
-huggingface_hub
-datasets
+# Optional: For fp8 quantization support
+bitsandbytes>=0.42.0
