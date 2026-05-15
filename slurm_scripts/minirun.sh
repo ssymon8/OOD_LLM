@@ -10,9 +10,6 @@
 
 # Load required modules
 echo "Loading CUDA modules..."
-module load cuda/12.0 2>/dev/null || module load cuda 2>/dev/null || true
-module load pytorch 2>/dev/null || true
-
 # Load environment
 echo "Activating virtual environment..."
 source ~/OOD_LLM/.venv/bin/activate
