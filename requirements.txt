@@ -1,25 +1,31 @@
-# Core dependencies
-torch>=2.2.0
-transformers>=4.45.0
-accelerate>=0.28.0
+# Python version requirement
+# Requires Python 3.11 or higher
+# Install with: python3.11 -m pip install -r requirements.txt
+
+# Core dependencies (Compatible with PyTorch 2.1.2 + CUDA 12.0)
+torch==2.1.2
+torchvision>=0.16.2
+torchaudio>=2.1.2
+transformers>=4.40.0,<4.45.0
+accelerate>=0.25.0
 
 # Mistral specific
 mistral-common>=1.8.6
 
 # Data & Scientific Computing
-datasets>=2.18.0
-numpy>=1.26.0
-scipy>=1.12.0
-scikit-learn>=1.4.0
+datasets>=2.17.0
+numpy>=1.24.0,<2.0.0
+scipy>=1.11.0
+scikit-learn>=1.3.0
 
 # Visualization & Logging
-matplotlib>=3.8.0
-seaborn>=0.13.0
-tqdm>=4.66.0
+matplotlib>=3.7.0
+seaborn>=0.12.0
+tqdm>=4.65.0
 
 # Model Hub & Development
 huggingface_hub>=0.21.0
 jupyterlab>=4.0.0
 
 # Optional: For fp8 quantization support
-bitsandbytes>=0.42.0
+bitsandbytes>=0.41.0
