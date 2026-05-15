@@ -3,7 +3,7 @@ import sys
 import torch
 import json
 from pathlib import Path
-from transformers import AutoTokenizer, Ministral3ForCausalLM
+from transformers import Mistral3ForConditionalGeneration, MistralCommonBackend, FineGrainedFP8Config
 
 import logging
 
@@ -33,17 +33,16 @@ def main():
         logger.info(f"Using device: {device}")
         
         logger.info(f"Loading model from {model_path}...")
-        
         # Tokenizer loading
-        tokenizer = AutoTokenizer.from_pretrained(model_path)
+        tokenizer = MistralCommonBackend.from_pretrained(model_path)
         logger.info("Tokenizer loaded")
         
         # Model loading
-        model = Ministral3ForCausalLM.from_pretrained(
+        model = Mistral3ForConditionalGeneration.from_pretrained(
             model_path,
-            torch_dtype=torch.fp8,  # model is in fp8 for memory efficiency
             device_map="auto",
-            local_files_only=True  # prevent downloading from hub
+            local_files_only=True,  # prevent downloading from hub
+            quantization_config=FineGrainedFP8Config(dequantize= True)
         )
         logger.info("Model loaded")
         model.eval()  # Set to evaluation mode
