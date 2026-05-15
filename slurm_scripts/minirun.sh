@@ -1,10 +1,10 @@
 #!/bin/bash
 #SBATCH --job-name=ministral_OOD
-#SBATCH --partition=ENSTA-l40s
+#SBATCH --partition=ENSTA-h100
 #SBATCH --output=ministral_OOD_%j.log
 #SBATCH --error=ministral_OOD_%j.err
-#SBATCH --time=1:00:00
-#SBATCH --nodelist=ensta-l40s01.r2.enst.fr,
+#SBATCH --time=12:00:00
+#SBATCH --nodelist=ensta-h10001.r2.enst.fr,
 #SBATCH --gres=gpu:1
 #SBATCH --cpus-per-task=8
 
