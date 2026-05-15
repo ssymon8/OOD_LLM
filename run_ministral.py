@@ -10,11 +10,13 @@ import logging
 # Configure logger
 logging.basicConfig(
     level=logging.INFO,
-    format='%(asctime)s - %(levelname)s - %(message)s'
+    format='%(asctime)s - %(levelname)s - %(message)s',
+    force=True
 )
 logger = logging.getLogger(__name__)
 
 def main():
+    logger.info("Script started!")
     try:
         model_path = os.path.expanduser("~/OOD_LLM/ministral")
         
@@ -48,8 +50,8 @@ def main():
 
         # requests to test the model
         prompts = [
-        "Explique le concept de pointeur intelligent (smart pointer) en C++.",
-        "Écris une fonction Python utilisant PyTorch pour multiplier deux tenseurs."
+            "Explique le concept de pointeur intelligent (smart pointer) en C++.",
+            "Écris une fonction Python utilisant PyTorch pour multiplier deux tenseurs."
         ]
 
         # Create output directory
