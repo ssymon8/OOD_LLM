@@ -48,7 +48,20 @@ def main():
         logger.info("Model loaded")
         model.eval()  # Set to evaluation mode
 
-        summary(model)
+        #summary(model)
+
+        print("\n" + "="*70)
+        print("EXPLORING Mistral3Model ATTRIBUTES")
+        print("="*70)
+
+        # Type and class
+        print(f"\nType: {type(model.model)}")
+        print(f"Class name: {model.model.__class__.__name__}")
+
+        # List all attributes and methods of the model
+        print("\nAttributes and methods of model.model:")
+        for attr in dir(model.model):
+            print(f"  {attr}")
 
     except Exception as e:
         logger.error(f"Error during execution: {e}", exc_info=True)
