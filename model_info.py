@@ -10,6 +10,14 @@ from transformers import Mistral3ForConditionalGeneration, MistralCommonBackend,
 Helper script to view the Mistral 3 model architecture.
 """
 
+# Configure logger
+logging.basicConfig(
+    level=logging.INFO,
+    format='%(asctime)s - %(levelname)s - %(message)s',
+    force=True
+)
+logger = logging.getLogger(__name__)
+
 def main():
     logger.info("Script started!")
     try:
