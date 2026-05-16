@@ -51,7 +51,7 @@ def main():
         #register the hook on 25th layer of the model
         target_layer_idx = 25
         # register the hook on the target layer
-        handle = model.model.layers[target_layer_idx].register_forward_hook(inspect_layer_hook(target_layer_idx))
+        handle = model.model.language_model.layers[target_layer_idx].register_forward_hook(inspect_layer_hook(target_layer_idx))
         logger.info(f"Registered hook on layer {target_layer_idx}")
         
 

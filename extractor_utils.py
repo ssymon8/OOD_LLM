@@ -22,6 +22,20 @@ def inspect_layer_hook(layer_idx):
                     print(f"  [{i}] {type(inp).__name__}")
         elif isinstance(input, torch.Tensor):
             print(f"Input (Tensor): shape: {input.shape}")
+
+        ###########################################################
+        #inspect the layers (self-attention, feedforward, etc.)
+        if hasattr(module, "self_attn"):
+            print("\nSelf-Attention Layer:")
+            print(f"  Query shape: {module.self_attn.q_proj.weight.shape}")
+            print(f"  Key shape: {module.self_attn.k_proj.weight.shape}")
+            print(f"  Value shape: {module.self_attn.v_proj.weight.shape}")
+        
+        if hasattr(module, "mlp"):
+            print("\nFeedforward Layer:")
+            print(f"  Linear1 shape: {module.mlp.linear1.weight.shape}")
+            print(f"  Linear2 shape: {module.mlp.linear2.weight.shape}")
+        ###########################################################
         
         # inspect outputs
         if isinstance(output, tuple):
