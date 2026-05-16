@@ -7,7 +7,7 @@ from transformers import Mistral3ForConditionalGeneration, MistralCommonBackend,
 
 import logging
 
-from extractor_utils import debug_hook
+from extractor_utils import inspect_layer_hook
 
 # Configure logger
 logging.basicConfig(
@@ -48,10 +48,16 @@ def main():
         logger.info("Model loaded")
         model.eval()  # Set to evaluation mode
 
+        #register the hook on 25th layer of the model
+        target_layer_idx = 25
+        # register the hook on the target layer
+        handle = model.model.layers[target_layer_idx].register_forward_hook(inspect_layer_hook(target_layer_idx))
+        logger.info(f"Registered hook on layer {target_layer_idx}")
+        
+
         # requests to test the model
         prompts = [
             "Explique le concept de pointeur intelligent (smart pointer) en C++.",
-            "Écris une fonction Python utilisant PyTorch pour multiplier deux tenseurs."
         ]
 
         # Create output directory
@@ -80,7 +86,8 @@ def main():
                         temperature=0.1,
                         do_sample=True
                     )
-                
+
+                handle.remove()  # Remove the hook after use
                 # Decode response, skipping input tokens
                 input_length = inputs["input_ids"].shape[1]
                 response = tokenizer.decode(

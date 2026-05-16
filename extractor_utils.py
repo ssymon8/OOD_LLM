@@ -1,8 +1,38 @@
 import torch
 import torch.nn as nn
-from tranformers import Mistral3ForConditionalGeneration, MistralCommonBackend
+from transformers import Mistral3ForConditionalGeneration, MistralCommonBackend
 
-def debug_hook(module, input, output):
-    print(f"Debug Hook - Module: {module.__class__.__name__}")
-    print(f"Input shape: {[i.shape for i in input]}")
-    print(f"Output shape: {[o.shape for o in output]}")
+def inspect_layer_hook(layer_idx):
+    """
+    Hook to inspect the inputs and outputs of a specific layer during the forward pass.
+    """
+    def hook(module, input, output):
+        print(f"\n{'='*70}")
+        print(f"Layer {layer_idx} - {module.__class__.__name__}")
+        print(f"{'='*70}")
+        
+        # inspect inputs
+        # print the Tenspr shape if it's a tensor, otherwise print the type
+        if isinstance(input, tuple):
+            print(f"Input (tuple): {len(input)} elements")
+            for i, inp in enumerate(input):
+                if isinstance(inp, torch.Tensor):
+                    print(f"  [{i}] Tensor - shape: {inp.shape}")
+                else:
+                    print(f"  [{i}] {type(inp).__name__}")
+        elif isinstance(input, torch.Tensor):
+            print(f"Input (Tensor): shape: {input.shape}")
+        
+        # inspect outputs
+        if isinstance(output, tuple):
+            print(f"output (tuple): {len(output)} elements")
+            for o, out in enumerate(output):
+                if isinstance(out, torch.Tensor):
+                    print(f"  [{o}] Tensor - shape: {out.shape}")
+                else:
+                    print(f"  [{o}] {type(out).__name__}")
+        elif isinstance(output, torch.Tensor):
+            print(f"output (Tensor): shape: {output.shape}")
+        
+        print(f"{'='*70}\n")
+    return hook
