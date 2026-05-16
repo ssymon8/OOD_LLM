@@ -6,6 +6,8 @@ import json
 from pathlib import Path
 from transformers import Mistral3ForConditionalGeneration, MistralCommonBackend, FineGrainedFP8Config
 
+import logging
+
 """
 Helper script to view the Mistral 3 model architecture.
 """
