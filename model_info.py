@@ -40,7 +40,7 @@ def main():
 
         summary(model)
 
-        except Exception as e:
+    except Exception as e:
         logger.error(f"Error during execution: {e}", exc_info=True)
         sys.exit(1)
     
