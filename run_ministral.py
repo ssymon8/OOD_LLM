@@ -7,6 +7,8 @@ from transformers import Mistral3ForConditionalGeneration, MistralCommonBackend,
 
 import logging
 
+from extractor_utils import debug_hook
+
 # Configure logger
 logging.basicConfig(
     level=logging.INFO,
