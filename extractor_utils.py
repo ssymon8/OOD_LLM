@@ -32,9 +32,10 @@ def inspect_layer_hook(layer_idx):
             print(f"  Value shape: {module.self_attn.v_proj.weight.shape}")
         
         if hasattr(module, "mlp"):
-            print("\nFeedforward Layer:")
-            print(f"  Linear1 shape: {module.mlp.linear1.weight.shape}")
-            print(f"  Linear2 shape: {module.mlp.linear2.weight.shape}")
+            print(f"\nFeed-Forward Network:")
+            print(f"  gate_proj: {module.mlp.gate_proj.weight.shape}")
+            print(f"  up_proj: {module.mlp.up_proj.weight.shape}")
+            print(f"  down_proj: {module.mlp.down_proj.weight.shape}")
         ###########################################################
         
         # inspect outputs
