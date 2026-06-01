@@ -33,7 +33,7 @@ def main():
         MODEL_ID = "mistralai/Ministral-3-3B-Base-2512"
 
         logger.info(f"loading tokenizer for {MODEL_ID}...")
-        tokenizer = MistralCommonBackend.get_tokenizer(MODEL_ID)
+        tokenizer = MistralCommonBackend.from_pretrained(MODEL_ID)
         logger.info("Tokenizer loaded")
 
         logger.info(f"Loading model from {MODEL_ID}...")
