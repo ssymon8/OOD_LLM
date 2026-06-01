@@ -20,31 +20,26 @@ logger = logging.getLogger(__name__)
 def main():
     logger.info("Script started!")
     try:
-        model_path = os.path.expanduser("~/OOD_LLM/ministral")
-        
-        # Verify model path exists
-        if not Path(model_path).exists():
-            logger.error(f"Model path not found: {model_path}")
-            sys.exit(1)
-        
-        # Detect device
+        # env variable for hf cache
+        os.environ["HF_HOME"] = "/root/.cache/huggingface"
+
         if not torch.cuda.is_available():
             logger.error("CUDA not available :/")
             sys.exit(1)
-        device = "cuda"
+        
+        device = torch.device("cuda")
         logger.info(f"Using device: {device}")
-        
-        logger.info(f"Loading model from {model_path}...")
-        # Tokenizer loading
-        tokenizer = MistralCommonBackend.from_pretrained(model_path)
+
+        MODEL_ID = "mistralai/Ministral-3-3B-Base-2512"
+
+        logger.info(f"loading tokenizer for {MODEL_ID}...")
+        tokenizer = MistralCommonBackend.get_tokenizer(MODEL_ID)
         logger.info("Tokenizer loaded")
-        
-        # Model loading
+
+        logger.info(f"Loading model from {MODEL_ID}...")
         model = Mistral3ForConditionalGeneration.from_pretrained(
-            model_path,
-            device_map="auto",
-            local_files_only=True # prevent downloading from hub
-        )
+            MODEL_ID,
+            device_map="auto")
         logger.info("Model loaded")
         model.eval()  # Set to evaluation mode
 
