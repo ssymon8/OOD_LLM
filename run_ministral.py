@@ -7,7 +7,7 @@ from transformers import Mistral3ForConditionalGeneration, MistralCommonBackend,
 
 import logging
 
-from extractor_utils import inspect_layer_hook
+from extractor_utils import get_layer_output
 
 # Configure logger
 logging.basicConfig(
@@ -37,23 +37,25 @@ def main():
         logger.info("Tokenizer loaded")
 
         logger.info(f"Loading model from {MODEL_ID}...")
-        model = Mistral3ForConditionalGeneration.from_pretrained(
+        ministral = Mistral3ForConditionalGeneration.from_pretrained(
             MODEL_ID,
             device_map="auto")
         logger.info("Model loaded")
-        model.eval()  # Set to evaluation mode
+        ministral.eval()  # Set to evaluation mode
 
-        #register the hook on 25th layer of the model
+        # register the hook on 25th layer of the model
         target_layer_idx = 25
         # register the hook on the target layer
-        handle = model.model.language_model.layers[target_layer_idx].register_forward_hook(inspect_layer_hook(target_layer_idx))
+        hook, features = get_layer_output(target_layer_idx)
+        handle = ministral.model.layers[target_layer_idx].register_forward_hook(hook)
         logger.info(f"Registered hook on layer {target_layer_idx}")
         
-
+        #list of the embedded outputs of the 25th layer
+        layer_outputs = []
         # requests to test the model
         prompts = [
             "Explique le concept de pointeur intelligent (smart pointer) en C++.",
-        ]
+        ]   
 
         # Create output directory
         output_dir = Path("./outputs")
@@ -74,7 +76,7 @@ def main():
                 ).to(device)
 
                 with torch.no_grad():
-                    outputs = model.generate(
+                    outputs = ministral.generate(
                         input_ids=inputs["input_ids"],
                         attention_mask=inputs.get("attention_mask"),
                         max_length=inputs["input_ids"].shape[1] + 512,
@@ -82,7 +84,14 @@ def main():
                         do_sample=True
                     )
 
+                #append the layer output to the list
+                if "outputs" in features:
+                    layer_outputs.append(features["outputs"])
+                    logger.info(f"Captured output from layer {target_layer_idx} with shape: {features['outputs'].shape}")
+
                 handle.remove()  # Remove the hook after use
+
+                
                 # Decode response, skipping input tokens
                 input_length = inputs["input_ids"].shape[1]
                 response = tokenizer.decode(
@@ -93,6 +102,10 @@ def main():
                 # Save result
                 json.dump({"prompt": prompt, "response": response}, f, ensure_ascii=False)
                 f.write("\n")
+            
+            # Save the captured layer outputs as well
+            layer_outputs_file = output_dir / "layer_outputs.pt"
+            torch.save(layer_outputs, layer_outputs_file)
 
         logger.info(f"Results saved to {output_file}")
     

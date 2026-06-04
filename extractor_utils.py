@@ -51,3 +51,13 @@ def inspect_layer_hook(layer_idx):
         
         print(f"{'='*70}\n")
     return hook
+
+def get_layer_output(layer_idx):
+    """
+    A simpler hook to just print the output shape of the layer.
+    """
+    features = {}
+    
+    def hook(module, input, output):
+        features["outputs"] = output.detach().cpu()
+    return hook, features
