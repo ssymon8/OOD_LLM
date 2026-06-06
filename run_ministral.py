@@ -103,9 +103,9 @@ def main():
                 #handle.remove()
                 
                 #append the layer outputs to the list
-                if "outputs" in features and len(features["outputs"]) > 0:
-                    layer_outputs.append(features["outputs"])
-                    logger.info(f"Captured {len(features['outputs'])} outputs from layer {target_layer_idx}")
+                #if "outputs" in features and len(features["outputs"]) > 0:
+                #    layer_outputs.append(features["outputs"])
+                #    logger.info(f"Captured {len(features['outputs'])} outputs from layer {target_layer_idx}")
 
                 
                 # Decode response, skipping input tokens
@@ -120,8 +120,8 @@ def main():
                 f.write("\n")
             
             # Save the captured layer outputs as well
-            layer_outputs_file = output_dir / "layer_outputs.pt"
-            torch.save(layer_outputs, layer_outputs_file)
+            #layer_outputs_file = output_dir / "layer_outputs.pt"
+            #torch.save(layer_outputs, layer_outputs_file)
 
         logger.info(f"Results saved to {output_file}")
     
