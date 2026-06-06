@@ -4,10 +4,12 @@ import torch
 import json
 from pathlib import Path
 from transformers import Mistral3ForConditionalGeneration, MistralCommonBackend, FineGrainedFP8Config
+from datasets import load_dataset
 
 import logging
 
 from extractor_utils import get_layer_output
+from mmlu_bench import MMLUBench
 
 # Configure logger
 logging.basicConfig(
@@ -45,13 +47,17 @@ def main():
         ministral.eval()  # Set to evaluation mode
 
         # target layer to extract
-        target_layer_idx = 25
+        #target_layer_idx = 25
         
         #list of the embedded outputs of the 25th layer
         layer_outputs = []
         # requests to test the model
+
+        mmlu_dataset = load_dataset("cais/mmlu", "abstract_algebra", split="test")
+        logger.info(f"Loaded MMLU dataset with {len(mmlu_dataset)} samples")
+
         prompts = [
-            "Explique le concept de pointeur intelligent (smart pointer) en C++.",
+            MMLUBench.zero_shot_format_prompt(sample["question"], sample["choices"], sample["subject"]) for sample in mmlu_dataset
         ]   
 
         # Create output directory
@@ -66,9 +72,9 @@ def main():
                 messages = [{"role": "user", "content": prompt}]
                 
                 # Register a fresh hook for each prompt
-                hook, features = get_layer_output(target_layer_idx)
-                handle = ministral.model.language_model.layers[target_layer_idx].register_forward_hook(hook)
-                logger.info(f"Registered hook on layer {target_layer_idx}")
+                #hook, features = get_layer_output(target_layer_idx)
+                #handle = ministral.model.language_model.layers[target_layer_idx].register_forward_hook(hook)
+                #logger.info(f"Registered hook on layer {target_layer_idx}")
                 
                 # Apply chat template and move all tensors to device
                 inputs = tokenizer.apply_chat_template(
@@ -87,7 +93,7 @@ def main():
                     )
 
                 # Remove the hook after generation
-                handle.remove()
+                #handle.remove()
                 
                 #append the layer outputs to the list
                 if "outputs" in features and len(features["outputs"]) > 0:
