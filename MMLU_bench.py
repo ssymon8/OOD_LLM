@@ -22,7 +22,7 @@ class MMLUBench:
         self.model = Mistral3ForConditionalGeneration.from_pretrained(
             model_id,
             device_map="auto",
-            quantization_config=FineGrainedFP8Config(dequantize=False)
+            quantization_config=FineGrainedFP8Config(dequantize=True)
         ).to(self.device)
         self.model.eval()
 
