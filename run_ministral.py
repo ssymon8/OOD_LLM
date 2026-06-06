@@ -18,11 +18,11 @@ logging.basicConfig(
 logger = logging.getLogger(__name__)
 
 def zero_shot_format_prompt(question: str, choices: list, subject: str): #zero-shot prompt formatting
-        choices = ["A", "B", "C", "D"]  # Ensure choices are labeled as A, B, C, D
+        answer = ["A", "B", "C", "D"]  # Ensure choices are labeled as A, B, C, D
         prompt = f"The following are multiple choice questions (with answers) about {subject}:\n\n"
         prompt += f"Question: {question}\n"
         for idx, choice in enumerate(choices):
-            prompt += f"{choices[idx]}. {choice}\n"
+            prompt += f"{[idx]}. {choice}\n"
         prompt += "Answer:"
         return prompt
 
