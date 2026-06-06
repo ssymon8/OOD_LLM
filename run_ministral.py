@@ -9,8 +9,6 @@ from datasets import load_dataset
 import logging
 
 from extractor_utils import get_layer_output
-from mmlu_bench import MMLUBench
-
 # Configure logger
 logging.basicConfig(
     level=logging.INFO,
@@ -18,6 +16,15 @@ logging.basicConfig(
     force=True
 )
 logger = logging.getLogger(__name__)
+
+def zero_shot_format_prompt(question: str, choices: list, subject: str): #zero-shot prompt formatting
+        choices = ["A", "B", "C", "D"]  # Ensure choices are labeled as A, B, C, D
+        prompt = f"The following are multiple choice questions (with answers) about {subject}:\n\n"
+        prompt += f"Question: {question}\n"
+        for idx, choice in enumerate(choices):
+            prompt += f"{choices[idx]}. {choice}\n"
+        prompt += "Answer:"
+        return prompt
 
 def main():
     logger.info("Script started!")
@@ -57,7 +64,7 @@ def main():
         logger.info(f"Loaded MMLU dataset with {len(mmlu_dataset)} samples")
 
         prompts = [
-            MMLUBench.zero_shot_format_prompt(sample["question"], sample["choices"], sample["subject"]) for sample in mmlu_dataset
+            zero_shot_format_prompt(sample["question"], sample["choices"], sample["subject"]) for sample in mmlu_dataset
         ]   
 
         # Create output directory
