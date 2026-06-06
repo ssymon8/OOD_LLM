@@ -30,11 +30,11 @@ class MMLUBench:
         self.choice_ids = self._get_choice_token_ids()
     
     def _get_choice_token_ids(self):
-        choice_token_ids = {}
+        choice_token_ids = []
         for choice in self.choices:
             token_id = self.tokenizer.encode(choice)
             if token_id is not None:
-                choice_token_ids[choice] = token_id
+                choice_token_ids.append(token_id[-1])
             else:
                 raise ValueError(f"Token for choice '{choice}' not found in tokenizer.")
         return choice_token_ids
@@ -131,6 +131,7 @@ def main():
         for subject in subjects:
             logger.info(f"Evaluating subject: {subject}")
             subject_score = mmlu_bench.evaluate_subject(subject, split="test", mode="five-shot")
+            scores.append(subject_score)
 
         logger.info("MMLU evaluation completed!")
         logger.info(f"Mean score: {sum(scores) / len(scores):.4f}")
