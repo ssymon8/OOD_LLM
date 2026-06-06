@@ -83,7 +83,7 @@ class MMLUBench:
                 return_dict=True
             ).to(self.device)
             with torch.no_grad():
-                outputs = self.model.generate(
+                outputs = self.model(
                     input_ids=inputs["input_ids"],
                     attention_mask=inputs.get("attention_mask"),
                     max_length=inputs["input_ids"].shape[1] + 512,
