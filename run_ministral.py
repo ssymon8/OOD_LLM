@@ -22,7 +22,7 @@ def zero_shot_format_prompt(question: str, choices: list, subject: str): #zero-s
         prompt = f"The following are multiple choice questions (with answers) about {subject}:\n\n"
         prompt += f"Question: {question}\n"
         for idx, choice in enumerate(choices):
-            prompt += f"{[idx]}. {choice}\n"
+            prompt += f"{answer[idx]}. {choice}\n"
         prompt += "Answer:"
         return prompt
 
@@ -118,6 +118,9 @@ def main():
                 # Save result
                 json.dump({"prompt": prompt, "response": response}, f, ensure_ascii=False)
                 f.write("\n")
+
+                del inputs, outputs  # Free up memory
+                torch.cuda.empty_cache()
             
             # Save the captured layer outputs as well
             #layer_outputs_file = output_dir / "layer_outputs.pt"
