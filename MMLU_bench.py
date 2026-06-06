@@ -4,6 +4,11 @@ from transformers import Mistral3ForConditionalGeneration, MistralCommonBackend,
 from tqdm import tqdm
 from datasets import load_dataset
 
+import logging
+import os
+import sys
+from pathlib import Path
+
 class MMLUBench:
     def __init__(self, model_id: str):
         self.model_id = model_id
