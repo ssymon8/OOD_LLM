@@ -39,7 +39,8 @@ def main():
         logger.info(f"Loading model from {MODEL_ID}...")
         ministral = Mistral3ForConditionalGeneration.from_pretrained(
             MODEL_ID,
-            device_map="auto")
+            device_map="auto",
+            quantization_config=FineGrainedFP8Config(dequantize = True))
         logger.info("Model loaded")
         ministral.eval()  # Set to evaluation mode
 
