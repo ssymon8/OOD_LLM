@@ -56,8 +56,8 @@ def get_layer_output(layer_idx):
     """
     A simpler hook to just print the output shape of the layer.
     """
-    features = {}
+    features = {"outputs": []}
     
     def hook(module, input, output):
-        features["outputs"] = output.detach().cpu()
+        features["outputs"].append(output.detach().cpu())
     return hook, features

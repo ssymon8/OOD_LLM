@@ -44,12 +44,8 @@ def main():
         logger.info("Model loaded")
         ministral.eval()  # Set to evaluation mode
 
-        # register the hook on 25th layer of the model
+        # target layer to extract
         target_layer_idx = 25
-        # register the hook on the target layer
-        hook, features = get_layer_output(target_layer_idx)
-        handle = ministral.model.language_model.layers[target_layer_idx].register_forward_hook(hook)
-        logger.info(f"Registered hook on layer {target_layer_idx}")
         
         #list of the embedded outputs of the 25th layer
         layer_outputs = []
@@ -69,6 +65,11 @@ def main():
                 logger.info(f"Processing prompt {i}/{len(prompts)}: '{prompt[:30]}...'")
                 messages = [{"role": "user", "content": prompt}]
                 
+                # Register a fresh hook for each prompt
+                hook, features = get_layer_output(target_layer_idx)
+                handle = ministral.model.language_model.layers[target_layer_idx].register_forward_hook(hook)
+                logger.info(f"Registered hook on layer {target_layer_idx}")
+                
                 # Apply chat template and move all tensors to device
                 inputs = tokenizer.apply_chat_template(
                     messages,
@@ -85,12 +86,13 @@ def main():
                         do_sample=True
                     )
 
-                #append the layer output to the list
-                if "outputs" in features:
+                # Remove the hook after generation
+                handle.remove()
+                
+                #append the layer outputs to the list
+                if "outputs" in features and len(features["outputs"]) > 0:
                     layer_outputs.append(features["outputs"])
-                    logger.info(f"Captured output from layer {target_layer_idx} with shape: {features['outputs'].shape}")
-
-                handle.remove()  # Remove the hook after use
+                    logger.info(f"Captured {len(features['outputs'])} outputs from layer {target_layer_idx}")
 
                 
                 # Decode response, skipping input tokens
