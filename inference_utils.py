@@ -47,13 +47,6 @@ def infer_with_clean_context(prompt: str, model, tokenizer):
     )
 
     del inputs, outputs  # Free up memory
-    torch.cuda.empty_cache()  # Clear GPU memory after inference, just in case
+    torch.cuda.empty_cache()  # Clear GPU memory (again) after inference, just in case
 
     return response
-
-def mmlu_five_shot_prompt(prompt: str, model, tokenizer):
-    """
-    Similar to the above function but specifically designed for MMLU 5-shot inference.
-    It will format the prompt according to the MMLU 5-shot format and then perform inference.
-    """
-    
