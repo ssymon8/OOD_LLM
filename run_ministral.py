@@ -48,7 +48,7 @@ def main():
         target_layer_idx = 25
         # register the hook on the target layer
         hook, features = get_layer_output(target_layer_idx)
-        handle = ministral.model.layers[target_layer_idx].register_forward_hook(hook)
+        handle = ministral.model.language_model.layers[target_layer_idx].register_forward_hook(hook)
         logger.info(f"Registered hook on layer {target_layer_idx}")
         
         #list of the embedded outputs of the 25th layer
