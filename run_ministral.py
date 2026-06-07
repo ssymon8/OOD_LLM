@@ -19,7 +19,8 @@ logger = logging.getLogger(__name__)
 
 def zero_shot_format_prompt(question: str, choices: list, subject: str): #zero-shot prompt formatting
         answer = ["A", "B", "C", "D"]  # Ensure choices are labeled as A, B, C, D
-        prompt = f"The following are multiple choice questions (with answers) about {subject}:\n\n"
+        prompt = f"You are a precise evaluation harness. Your task is to answer the following multiple-choice question about {subject}:\n\n."
+        prompt+= f"CRITICAL INSTRUCTION: \n - You MUST answer with only the letter corresponding to the correct choice (A, B, C, or D). \n - Do NOT include any explanations, any punctuation, any spaces.\n\n Example of correct answer format: A\n\n"
         prompt += f"Question: {question}\n"
         for idx, choice in enumerate(choices):
             prompt += f"{answer[idx]}. {choice}\n"
