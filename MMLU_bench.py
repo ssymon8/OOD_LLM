@@ -89,10 +89,9 @@ class MMLUBench:
                 outputs = self.model(
                     input_ids=inputs["input_ids"],
                     attention_mask=inputs.get("attention_mask"),
-                    max_length=inputs["input_ids"].shape[1] + 512,
-                    temperature=0.0,
-                    do_sample=False,
                     max_length=inputs["input_ids"].shape[1] + 1,  # Only generate one token for the answer
+                    temperature=0.0,
+                    do_sample=False
                 )
             
             input_length = inputs["input_ids"].shape[1]
