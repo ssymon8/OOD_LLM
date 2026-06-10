@@ -40,16 +40,18 @@ class MMLUBench:
         return choice_token_ids
 
     def zero_shot_format_prompt(self, question: str, choices: list, subject: str): #zero-shot prompt formatting
-        prompt = f"The following are multiple choice questions (with answers) about {subject}:\n\n"
+        prompt = f"You are a precise evaluation harness. Your task is to answer the following multiple-choice question about {subject}:\n\n."
+        prompt+= f"CRITICAL INSTRUCTION: \n - You MUST answer with only the letter corresponding to the correct choice (A, B, C, or D). \n - Do NOT include any explanations, any punctuation, any spaces.\n\n Example of correct answer format: A\n\n"
         prompt += f"Question: {question}\n"
         for idx, choice in enumerate(choices):
             prompt += f"{self.choices[idx]}. {choice}\n"
         prompt += "Answer:"
         return prompt
     
-    def five_shot_format_prompt(self, question: str, choices: list, subject: str): #five-shot prompt formatting
-        dev_set = load_dataset("cais/mmlu", subject, split="dev")
-        prompt = f"The following are multiple choice questions (with answers) about {subject}:\n\n"
+    def five_shot_format_prompt(self, question: str, choices: list, subject: str, dev_set: list): #five-shot prompt formatting
+        prompt = f"You are a precise evaluation harness. Your task is to answer the following multiple-choice questions about {subject}:\n\n."
+        prompt+= f"CRITICAL INSTRUCTION: \n - You MUST answer with only the letter corresponding to the correct choice (A, B, C, or D). \n - Do NOT include any explanations, any punctuation, any spaces.\n\n Example of correct answer format: A\n\n"
+        prompt += "You will be given 5 example questions with their correct answers, followed by a final question for which you need to provide the correct answer.\n\n"
         for i, sample in enumerate(dev_set):
             prompt += f"Question: Sample question {i+1}?\n"
             prompt += sample["question"] + "\n"
@@ -65,6 +67,7 @@ class MMLUBench:
 
     def evaluate_subject(self, subject: str, split: str = "test", mode: str = "five-shot") -> float: 
         dataset = load_dataset("cais/mmlu", subject, split=split)
+        dev_set = load_dataset("cais/mmlu", subject, split="dev")
         correct = 0
         total = 0
 
@@ -72,7 +75,7 @@ class MMLUBench:
             if mode == "zero-shot":
                 prompt = self.zero_shot_format_prompt(sample["question"], sample["choices"], sample["subject"])
             elif mode == "five-shot":
-                prompt = self.five_shot_format_prompt(sample["question"], sample["choices"], sample["subject"])
+                prompt = self.five_shot_format_prompt(sample["question"], sample["choices"], sample["subject"], dev_set)
             else:
                 raise ValueError(f"Unsupported mode: {mode}")
                 
@@ -88,13 +91,14 @@ class MMLUBench:
                     attention_mask=inputs.get("attention_mask"),
                     max_length=inputs["input_ids"].shape[1] + 512,
                     temperature=0.0,
-                    do_sample=False
+                    do_sample=False,
+                    max_length=inputs["input_ids"].shape[1] + 1,  # Only generate one token for the answer
                 )
             
             input_length = inputs["input_ids"].shape[1]
 
             logits = outputs.logits[:, -1, :]
-            choice_logits = logits[:, self.choice_ids]
+            choice_logits = logits[:, self.choice_ids] #we isolate the logits corresponding to the tokens for A, B, C, D
 
             answer_id = torch.argmax(choice_logits, dim=-1).item()
 
