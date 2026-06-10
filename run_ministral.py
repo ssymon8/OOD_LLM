@@ -95,9 +95,9 @@ def main():
                     outputs = ministral.generate(
                         input_ids=inputs["input_ids"],
                         attention_mask=inputs.get("attention_mask"),
-                        max_length=inputs["input_ids"].shape[1] + 512,
-                        temperature=0.1,
-                        do_sample=True
+                        max_length=inputs["input_ids"].shape[1] + 1,
+                        temperature=0,
+                        do_sample=False
                     )
 
                 # Remove the hook after generation
