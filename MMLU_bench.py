@@ -97,10 +97,9 @@ class MMLUBench:
             
             input_length = inputs["input_ids"].shape[1]
 
-            logits = outputs.logits[:, :, :]
-            print(f"Logits shape: {logits.shape}")
-            choice_logits = logits[:, self.choice_ids] #we isolate the logits corresponding to the tokens for A, B, C, D
-            print(f"Logits for choices A, B, C, D: {choice_logits}")
+            logits = outputs.logits[:, -1, :]
+            print(f"Logits for A, B, C, D: {logits[0, self.choice_ids]}")  # see the logits
+            choice_logits = logits[0, self.choice_ids] #we isolate the logits corresponding to the tokens for A, B, C, D
 
             answer_id = torch.argmax(choice_logits, dim=-1).item()
 
