@@ -16,3 +16,8 @@ For this project, I will be using **Ministral-3-3B-Instruct-2512** due to its li
 ## Disclaimer
 
 This project is purely personal. It is built for exploration and learning, and has no intention of being used for commercial or formal research purposes.
+
+## First Benchmarks
+
+MMLU zero-shot : 0.6460
+MMLU five-shot : 0.5381

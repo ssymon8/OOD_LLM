@@ -106,7 +106,7 @@ class MMLUBench:
             print(f"Model's predicted answer: {self.choices[answer_id]}")  # see the model's predicted answer
             print(f"Correct answer: {sample['answer']}")  # see the correct answer
 
-            if self.choices[answer_id] == sample["answer"]:
+            if answer_id == sample["answer"]:
                 correct += 1
             total += 1
 
