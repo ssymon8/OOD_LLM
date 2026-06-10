@@ -35,6 +35,7 @@ class MMLUBench:
             token_id = self.tokenizer.encode(choice)
             if token_id is not None:
                 choice_token_ids.append(token_id[-1])
+                print(f"Token ID for choice '{choice}': {token_id[-1]}")  # Debugging: print the token ID for each choice
             else:
                 raise ValueError(f"Token for choice '{choice}' not found in tokenizer.")
         return choice_token_ids
