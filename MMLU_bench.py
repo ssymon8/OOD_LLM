@@ -7,6 +7,7 @@ from datasets import load_dataset
 import logging
 import os
 import sys
+import argparse
 from pathlib import Path
 
 class MMLUBench:
@@ -127,13 +128,25 @@ logging.basicConfig(
 )
 logger = logging.getLogger(__name__)
 
+def parse_args():
+    parser = argparse.ArgumentParser(description=" Specify model Id and mode for the benchmarking")
+
+    parser.add_argument("--model_id", type=str, default="mistralai/Ministral-3-3B-Base-2512", help="HuggingFace model ID to evaluate")
+    parser.add_argument("--mode", type=str, choices=["zero-shot", "five-shot"], default="five-shot", help="Evaluation mode: zero-shot or five-shot")
+
+
+    return parser.parse_args()
+
+    
 def main():
+    args = parse_args()
+
     logger.info("Starting MMLU evaluation...")
     try:
         # env variable for hf cache
         os.environ["HF_HOME"] = "/root/.cache/huggingface"
 
-        MODEL_ID = "mistralai/Ministral-3-3B-Base-2512"
+        MODEL_ID = args.model_id
 
         mmlu_bench = MMLUBench(MODEL_ID)
 
@@ -142,7 +155,7 @@ def main():
         scores = []
         for subject in subjects:
             logger.info(f"Evaluating subject: {subject}")
-            subject_score = mmlu_bench.evaluate_subject(subject, split="test", mode="five-shot")
+            subject_score = mmlu_bench.evaluate_subject(subject, split="test", mode=args.mode)
             scores.append(subject_score)
 
         logger.info("MMLU evaluation completed!")
