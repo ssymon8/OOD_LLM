@@ -63,7 +63,7 @@ class MMLUBench:
         prompt += f"Final question: {question}\n"
         for idx, choice in enumerate(choices):
             prompt += f"{self.choices[idx]}. {choice}\n"
-        prompt += "Answer:"
+        prompt += "Answer: "
         return prompt
 
     def evaluate_subject(self, subject: str, split: str = "test", mode: str = "five-shot") -> float: 
