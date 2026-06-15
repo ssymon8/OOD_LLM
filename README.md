@@ -21,3 +21,5 @@ This project is purely personal. It is built for exploration and learning, and h
 
 MMLU zero-shot : 0.6460
 MMLU five-shot : 0.5381
+
+![UMAP 3D Visualization](umap_3d.gif)
