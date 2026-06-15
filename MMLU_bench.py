@@ -114,10 +114,14 @@ class MMLUBench:
                 correct += 1
             total += 1
 
+            del inputs, outputs  # Free up memory
+            torch.cuda.empty_cache()  # Clear GPU memory after each sample, just in case
+
         print(f"Total correct: {correct} out of {total}")
         accuracy = correct / total if total > 0 else 0
         print(f"Accuracy for {subject} ({mode}): {accuracy:.4f}")
         return accuracy
+    
 
 
 # Configure logger
