@@ -66,6 +66,16 @@ class MMLUBench:
             prompt += f"{self.choices[idx]}. {choice}\n"
         prompt += "Answer: "
         return prompt
+        
+    def get_layer_output(self,layer_idx):
+    """
+    A simpler hook to just print the output shape of the layer.
+    """
+        features = {"outputs": []}
+    
+        def hook(module, input, output):
+            features["outputs"].append(output.detach().cpu())
+        return hook, features
 
     def evaluate_subject(self, subject: str, split: str = "test", mode: str = "five-shot") -> float: 
         dataset = load_dataset("cais/mmlu", subject, split=split)
@@ -75,6 +85,9 @@ class MMLUBench:
 
         random_indices = torch.randperm(len(dataset))[:100].tolist()  # Randomly select 100 indices for benchmarking
         test_set = dataset.select(random_indices)
+
+        correct_outputs = []
+        wrong_outputs = []
 
         for sample in tqdm(test_set):
             if mode == "zero-shot":
@@ -91,6 +104,10 @@ class MMLUBench:
                 return_dict=True
             ).to(self.device)
 
+            hook, features = self.get_layer_output(layer_idx=-1)
+
+            handle = self.model.language_model.model.layers[-1].register_forward_hook(hook)  # Register the hook on the last layer (you can change the index for different layers)
+            
             with torch.no_grad():
                 outputs = self.model(
                     input_ids=inputs["input_ids"],
@@ -99,9 +116,10 @@ class MMLUBench:
                     temperature=0.0,
                     do_sample=False
                 )
-            
-            input_length = inputs["input_ids"].shape[1]
+      
+            handle.remove()  # Remove the hook after use
 
+            input_length = inputs["input_ids"].shape[1]
             logits = outputs.logits[:, -1, :]
             print(f"Logits for A, B, C, D: {logits[0, self.choice_ids]}")  # see the logits
             choice_logits = logits[0, self.choice_ids] #we isolate the logits corresponding to the tokens for A, B, C, D
@@ -112,6 +130,9 @@ class MMLUBench:
 
             if answer_id == sample["answer"]:
                 correct += 1
+                correct_outputs.append(features["outputs"][0])  # Append the captured output of the layer to the list
+            else:
+                wrong_outputs.append(features["outputs"][0])  # Append the captured output of the layer to the list
             total += 1
 
             del inputs, outputs  # Free up memory
@@ -120,6 +141,12 @@ class MMLUBench:
         print(f"Total correct: {correct} out of {total}")
         accuracy = correct / total if total > 0 else 0
         print(f"Accuracy for {subject} ({mode}): {accuracy:.4f}")
+
+        correct_outputs_file = Path(f"./outputs/{subject}_{mode}_correct_outputs.pt")
+        wrong_outputs_file = Path(f"./outputs/{subject}_{mode}_wrong_outputs.pt")
+
+        torch.save(correct_outputs, correct_outputs_file)
+        torch.save(wrong_outputs, wrong_outputs_file)
         return accuracy
     
 
