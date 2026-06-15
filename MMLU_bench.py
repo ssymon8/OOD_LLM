@@ -106,7 +106,7 @@ class MMLUBench:
 
             hook, features = self.get_layer_output(layer_idx=-1)
 
-            handle = self.model.model.model.language_model.model.layers[-1].register_forward_hook(hook)  # Register the hook on the last layer (you can change the index for different layers)
+            handle = self.model.model.model.language_model.layers[-1].register_forward_hook(hook)  # Register the hook on the last layer (you can change the index for different layers)
             
             with torch.no_grad():
                 outputs = self.model(

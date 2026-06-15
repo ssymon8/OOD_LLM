@@ -222,3 +222,4 @@ __marimo__/
 # Model
 ministral/
 interseting_logs/
+*.pt
