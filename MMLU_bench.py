@@ -68,9 +68,9 @@ class MMLUBench:
         return prompt
         
     def get_layer_output(self,layer_idx):
-    """
-    A simpler hook to just print the output shape of the layer.
-    """
+        """
+        A simpler hook to just print the output shape of the layer.
+        """
         features = {"outputs": []}
     
         def hook(module, input, output):
