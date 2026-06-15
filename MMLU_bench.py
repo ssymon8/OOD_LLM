@@ -188,9 +188,9 @@ def main():
         random_subjects_id = torch.randperm(len(subjects))[:5].tolist()  # Randomly select 5 subjects for benchmarking
 
         random_subjects = [subjects[i] for i in random_subjects_id]
-        
+
         scores = []
-        for subject in subjects:
+        for subject in random_subjects:
             logger.info(f"Evaluating subject: {subject}")
             subject_score = mmlu_bench.evaluate_subject(subject, split="test", mode=args.mode)
             scores.append(subject_score)
