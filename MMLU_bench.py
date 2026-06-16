@@ -201,7 +201,7 @@ def main():
         scores = []
         for subject in random_subjects:
             logger.info(f"Evaluating subject: {subject}")
-            Path(f"./outputs/{subjects}").mkdir(parents=True, exist_ok= True)
+            Path(f"./outputs/{subject}").mkdir(parents=True, exist_ok= True)
             subject_score = mmlu_bench.evaluate_subject(subject, split="test", mode=args.mode)
             scores.append(subject_score)
 
