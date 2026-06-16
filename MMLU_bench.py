@@ -108,6 +108,7 @@ class MMLUBench:
             hooks_and_features = [self.get_layer_output(i) for i in range(26)]
             handles= []
             for i in range(26):
+                print(f"registering hook on layer {i}")
                 handle = self.model.model.model.language_model.layers[i].register_forward_hook(hooks_and_features[i][0])
                 handles.append(handle)
             
