@@ -109,7 +109,7 @@ class MMLUBench:
             handles= []
             for i in range(26):
                 print(f"registering hook on layer {i}")
-                handle = self.model.model.model.language_model.layers[i].register_forward_hook(hooks_and_features[i][0])
+                handle = self.model.model.language_model.layers[i].register_forward_hook(hooks_and_features[i][0])
                 handles.append(handle)
             
             with torch.no_grad():
@@ -197,9 +197,11 @@ def main():
 
         random_subjects = [subjects[i] for i in random_subjects_id]
 
+
         scores = []
         for subject in random_subjects:
             logger.info(f"Evaluating subject: {subject}")
+            Path(f"./outputs/{subjects}").mkdir(parents=True, exist_ok= True)
             subject_score = mmlu_bench.evaluate_subject(subject, split="test", mode=args.mode)
             scores.append(subject_score)
 
