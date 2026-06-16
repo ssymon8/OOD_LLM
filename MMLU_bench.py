@@ -42,8 +42,8 @@ class MMLUBench:
         return choice_token_ids
 
     def zero_shot_format_prompt(self, question: str, choices: list, subject: str): #zero-shot prompt formatting
-        prompt = f"You are a precise evaluation harness. Your task is to answer the following multiple-choice question about {subject}:\n\n."
-        prompt+= f"CRITICAL INSTRUCTION: \n - You MUST answer with only the letter corresponding to the correct choice (A, B, C, or D). \n - Do NOT include any explanations, any punctuation, any spaces.\n\n Example of correct answer format: A\n\n"
+        prompt = f"You are a evaluation harness. Your task is to answer the following multiple-choice question about {subject}:\n\n."
+        prompt+= f"You MUST answer with only the letter corresponding to the correct choice (A, B, C, or D). \n\n"
         prompt += f"Question: {question}\n"
         for idx, choice in enumerate(choices):
             prompt += f"{self.choices[idx]}. {choice}\n"
@@ -52,8 +52,8 @@ class MMLUBench:
     
     def five_shot_format_prompt(self, question: str, choices: list, subject: str, dev_set: list): #five-shot prompt formatting
         prompt = f"You are a precise evaluation harness. Your task is to answer the following multiple-choice questions about {subject}:\n\n."
-        prompt+= f"CRITICAL INSTRUCTION: \n - You MUST answer with only the letter corresponding to the correct choice (A, B, C, or D). \n - Do NOT include any explanations, any punctuation, any spaces.\n\n Example of correct answer format: A\n\n"
-        prompt += "You will be given 5 example questions with their correct answers, followed by a final question for which you need to provide the correct answer.\n\n"
+        prompt+= f"You MUST answer with only the letter corresponding to the correct choice (A, B, C, or D).\n\n"
+        prompt += "Here 5 example questions with their correct answers, followed by the final question for which you need to provide the correct answer.\n\n"
         for i, sample in enumerate(dev_set):
             prompt += f"Question: Sample question {i+1}?\n"
             prompt += sample["question"] + "\n"
@@ -86,8 +86,8 @@ class MMLUBench:
         random_indices = torch.randperm(len(dataset))[:100].tolist()  # Randomly select 100 indices for benchmarking
         test_set = dataset.select(random_indices)
 
-        correct_outputs = []
-        wrong_outputs = []
+        correct_outputs = [[] for i in range(26)]
+        wrong_outputs = [[] for i in range(26)]
 
         for sample in tqdm(test_set):
             if mode == "zero-shot":
@@ -104,9 +104,12 @@ class MMLUBench:
                 return_dict=True
             ).to(self.device)
 
-            hook, features = self.get_layer_output(layer_idx=-1)
-
-            handle = self.model.model.model.language_model.layers[-1].register_forward_hook(hook)  # Register the hook on the last layer (you can change the index for different layers)
+            #Registering the hooks here (we'll go with a hook on each layer output to see how the model's opinion changes)
+            hooks_and_features = [self.get_layer_outputs(i) for i in range(26)]
+            handles= []
+            for i in range(26):
+                handle = self.model.model.model.language_model.layers[i].register_forward_hook(hooks_and_features[i][0])
+                handles.append(handle)
             
             with torch.no_grad():
                 outputs = self.model(
@@ -116,8 +119,9 @@ class MMLUBench:
                     temperature=0.0,
                     do_sample=False
                 )
-      
-            handle.remove()  # Remove the hook after use
+
+            for handle in handles:
+                handle.remove()  # Remove the hook after use
 
             input_length = inputs["input_ids"].shape[1]
             logits = outputs.logits[:, -1, :]
@@ -130,9 +134,11 @@ class MMLUBench:
 
             if answer_id == sample["answer"]:
                 correct += 1
-                correct_outputs.append(features["outputs"][0])  # Append the captured output of the layer to the list
+                for i, (hook, features) in enumerate(hooks_and_features):
+                    correct_outputs[i].append(features["outputs"][0])
             else:
-                wrong_outputs.append(features["outputs"][0])  # Append the captured output of the layer to the list
+                for i, (hook, features) in enumerate(hooks_and_features):
+                    wrong_outputs[i].append(features["outputs"][0])
             total += 1
 
             del inputs, outputs  # Free up memory
@@ -142,11 +148,12 @@ class MMLUBench:
         accuracy = correct / total if total > 0 else 0
         print(f"Accuracy for {subject} ({mode}): {accuracy:.4f}")
 
-        correct_outputs_file = Path(f"./outputs/{subject}_{mode}_correct_outputs.pt")
-        wrong_outputs_file = Path(f"./outputs/{subject}_{mode}_wrong_outputs.pt")
+        correct_outputs_files = [Path(f"./outputs/{subject}/correct_outputs_layer_{i}.pt") for i in range(26)]
+        wrong_outputs_file = [Path(f"./outputs/{subject}/wrong_outputs_layer_{i}.pt") for i in range(26)]
 
-        torch.save(correct_outputs, correct_outputs_file)
-        torch.save(wrong_outputs, wrong_outputs_file)
+        for i in range(26):
+            torch.save(correct_outputs[i], correct_outputs_file[i])
+            torch.save(wrong_outputs[i], wrong_outputs_file[i])
         return accuracy
     
 
@@ -185,7 +192,7 @@ def main():
         #copied those directly from the MMLU dataset card on HuggingFace
         subjects = ['abstract_algebra', 'anatomy', 'astronomy', 'business_ethics', 'clinical_knowledge', 'college_biology', 'college_chemistry', 'college_computer_science', 'college_mathematics', 'college_medicine', 'college_physics', 'computer_security', 'conceptual_physics', 'econometrics', 'electrical_engineering', 'elementary_mathematics', 'formal_logic', 'global_facts', 'high_school_biology', 'high_school_chemistry', 'high_school_computer_science', 'high_school_european_history', 'high_school_geography', 'high_school_government_and_politics', 'high_school_macroeconomics', 'high_school_mathematics', 'high_school_microeconomics', 'high_school_physics', 'high_school_psychology', 'high_school_statistics', 'high_school_us_history', 'high_school_world_history', 'human_aging', 'human_sexuality', 'international_law', 'jurisprudence', 'logical_fallacies', 'machine_learning', 'management', 'marketing', 'medical_genetics', 'miscellaneous', 'moral_disputes', 'moral_scenarios', 'nutrition', 'philosophy', 'prehistory', 'professional_accounting', 'professional_law', 'professional_medicine', 'professional_psychology', 'public_relations', 'security_studies', 'sociology', 'us_foreign_policy', 'virology', 'world_religions']
         
-        random_subjects_id = torch.randperm(len(subjects))[:5].tolist()  # Randomly select 5 subjects for benchmarking
+        random_subjects_id = torch.randperm(len(subjects))[:3].tolist()  # Randomly select 5 subjects for benchmarking
 
         random_subjects = [subjects[i] for i in random_subjects_id]
 
