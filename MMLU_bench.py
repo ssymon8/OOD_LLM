@@ -153,8 +153,8 @@ class MMLUBench:
         wrong_outputs_file = [Path(f"./outputs/{subject}/wrong_outputs_layer_{i}.pt") for i in range(26)]
 
         for i in range(26):
-            torch.save(correct_outputs[i], correct_outputs_file[i])
-            torch.save(wrong_outputs[i], wrong_outputs_file[i])
+            torch.save(correct_outputs_files[i], correct_outputs_file[i])
+            torch.save(wrong_outputs_files[i], wrong_outputs_file[i])
         return accuracy
     
 
