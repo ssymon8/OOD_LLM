@@ -105,7 +105,7 @@ class MMLUBench:
             ).to(self.device)
 
             #Registering the hooks here (we'll go with a hook on each layer output to see how the model's opinion changes)
-            hooks_and_features = [self.get_layer_outputs(i) for i in range(26)]
+            hooks_and_features = [self.get_layer_output(i) for i in range(26)]
             handles= []
             for i in range(26):
                 handle = self.model.model.model.language_model.layers[i].register_forward_hook(hooks_and_features[i][0])
