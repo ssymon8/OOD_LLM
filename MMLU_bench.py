@@ -105,12 +105,12 @@ class MMLUBench:
             ).to(self.device)
 
             #Registering the hooks here (we'll go with a hook on each layer output to see how the model's opinion changes)
-            hooks_and_features = [self.get_layer_output(i) for i in range(26)]
-            handles= []
-            for i in range(26):
-                print(f"registering hook on layer {i}")
-                handle = self.model.model.language_model.layers[i].register_forward_hook(hooks_and_features[i][0])
-                handles.append(handle)
+            #hooks_and_features = [self.get_layer_output(i) for i in range(26)]
+            #handles= []
+            #for i in range(26):
+            #    print(f"registering hook on layer {i}")
+            #    handle = self.model.model.language_model.layers[i].register_forward_hook(hooks_and_features[i][0])
+            #    handles.append(handle)
             
             with torch.no_grad():
                 outputs = self.model(
@@ -121,8 +121,8 @@ class MMLUBench:
                     do_sample=False
                 )
 
-            for handle in handles:
-                handle.remove()  # Remove the hook after use
+            #for handle in handles:
+            #    handle.remove()  # Remove the hook after use
 
             input_length = inputs["input_ids"].shape[1]
             logits = outputs.logits[:, -1, :]
@@ -135,11 +135,11 @@ class MMLUBench:
 
             if answer_id == sample["answer"]:
                 correct += 1
-                for i, (hook, features) in enumerate(hooks_and_features):
-                    correct_outputs[i].append(features["outputs"][0])
+                #for i, (hook, features) in enumerate(hooks_and_features):
+                correct_outputs.append(logits)
             else:
-                for i, (hook, features) in enumerate(hooks_and_features):
-                    wrong_outputs[i].append(features["outputs"][0])
+                #for i, (hook, features) in enumerate(hooks_and_features):
+                wrong_outputs.append(logits)
             total += 1
 
             del inputs, outputs  # Free up memory
@@ -149,12 +149,19 @@ class MMLUBench:
         accuracy = correct / total if total > 0 else 0
         print(f"Accuracy for {subject} ({mode}): {accuracy:.4f}")
 
-        correct_outputs_files = [Path(f"./outputs/{subject}/correct_outputs_layer_{i}.pt") for i in range(26)]
-        wrong_outputs_file = [Path(f"./outputs/{subject}/wrong_outputs_layer_{i}.pt") for i in range(26)]
+        #correct_outputs_files = [Path(f"./outputs/{subject}/correct_outputs_layer_{i}.pt") for i in range(26)]
+        #wrong_outputs_file = [Path(f"./outputs/{subject}/wrong_outputs_layer_{i}.pt") for i in range(26)]
 
-        for i in range(26):
-            torch.save(correct_outputs[i], correct_outputs_files[i])
-            torch.save(wrong_outputs[i], wrong_outputs_files[i])
+        correct_logits_file = Path(f"./outputs/{subject}/correct_logits.pt")
+        wrong_logits_file = Path(f"./outputs/{subject}/wrong_logits.pt")
+
+        #for i in range(26):
+        #    torch.save(correct_outputs[i], correct_outputs_files[i])
+        #    torch.save(wrong_outputs[i], wrong_outputs_files[i])
+
+        torch.save(correct_outputs, correct_logits_file)
+        torch.save(wrong_outputs, wrong_logits_file)
+        
         return accuracy
     
 
