@@ -125,7 +125,7 @@ class MMLUBench:
             #    handle.remove()  # Remove the hook after use
 
             input_length = inputs["input_ids"].shape[1]
-            logits = outputs.logits[:, -1, :]
+            logits = outputs.logits[:, -1, :].detach().cpu()
             print(f"Logits for A, B, C, D: {logits[0, self.choice_ids]}")  # see the logits
             choice_logits = logits[0, self.choice_ids] #we isolate the logits corresponding to the tokens for A, B, C, D
 
